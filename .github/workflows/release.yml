@@ -36,7 +36,7 @@ jobs:
           # either 'goreleaser' (default) or 'goreleaser-pro'
           distribution: goreleaser
           version: latest
-          args: release --clean --config /home/runner/work/scratchdata/scratchdata/scripts/.goreleaser-linux.yml
+          args: release --clean --config ${{ github.workspace }}/scripts/.goreleaser-linux.yml
           workdir: /home/runner/work/scratchdata/scratchdata
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
@@ -65,7 +65,7 @@ jobs:
         with:
           distribution: goreleaser
           version: latest
-          args: release --clean --config /home/runner/work/scratchdata/scratchdata/scripts/.goreleaser-darwin.yml
+          args: release --clean --config ${{github.workspace}}/scripts/.goreleaser-darwin.yml
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
