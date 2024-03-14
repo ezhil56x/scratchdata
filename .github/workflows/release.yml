@@ -28,6 +28,12 @@ jobs:
       # More assembly might be required: Docker logins, GPG, etc.
       # It all depends on your needs.
 
+      - name: Cache osx-cross
+        uses: actions/cache@v2
+        with:
+          path: /opt/osxcross
+          key: osxcross
+
       - name: Install osx-cross
         uses: mbround18/setup-osxcross@v1
         with:
