@@ -30,6 +30,7 @@ jobs:
         id: osx-cross-hit
         run: |
           echo "cache-hit=$(test -d /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo $GITHUB_OUTPUT
 
       - name: Restore osx-cross cache
         if: steps.osx-cross-hit.outputs.cache-hit == 'true'
