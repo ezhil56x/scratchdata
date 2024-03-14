@@ -28,10 +28,10 @@ jobs:
       # More assembly might be required: Docker logins, GPG, etc.
       # It all depends on your needs.
 
-      - name: Install clang
-        run: |
-          curl -sSL https://cmake.org/files/v3.14/cmake-3.14.5-Linux-x86_64.tar.gz | sudo tar -xzC /opt
-          export PATH=/opt/cmake-3.14.5-Linux-x86_64/bin:$PATH
+      - name: Install osx-cross
+        uses: mbround18/setup-osxcross@v1
+        with:
+          version: "12.3"
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
