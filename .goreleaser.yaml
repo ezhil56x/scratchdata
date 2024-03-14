@@ -7,7 +7,7 @@ env:
 builds:
 # linux amd64
   - id: scratchdata-linux-amd64
-    binary: scratchdata-linux-amd64
+    binary: scratchdata
     main: ./
     env:
       - CC=x86_64-linux-gnu-gcc
@@ -23,7 +23,7 @@ builds:
 
 # darwin arm64
   - id: scratchdata-darwin-arm64
-    binary: scratchdata-darwin-arm64
+    binary: scratchdata
     main: ./
     env:
       - CC=oa64-clang
@@ -37,7 +37,7 @@ builds:
 
 # darwin amd64
   - id: scratchdata-darwin-amd64
-    binary: scratchdata-darwin-amd64
+    binary: scratchdata
     main: ./
     env:
       - CC=oa64-clang
