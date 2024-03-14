@@ -1,0 +1,53 @@
+project_name: scratchdata
+
+dist: .builds
+env:
+  - CGO_ENABLED=1
+
+builds:
+# darwin arm64
+  - id: scratchdata-darwin-arm64
+    binary: scratchdata
+    main: ./
+    env:
+      - CC=oa64-clang
+      - CXX=oa64-clang++
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    flags:
+      - -trimpath
+
+# darwin amd64
+  - id: scratchdata-darwin-amd64
+    binary: scratchdata
+    main: ./
+    env:
+      - CC=oa64-clang
+      - CXX=oa64-clang++
+    goos:
+      - darwin
+    goarch:
+      - amd64
+    flags:
+      - -trimpath
+
+archives:
+  - id: scratchdata
+    builds:
+      - scratchdata-darwin-arm64
+      - scratchdata-darwin-amd64
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    wrap_in_directory: true
+    format: tar.gz
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc

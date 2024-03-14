@@ -1,0 +1,40 @@
+project_name: scratchdata
+
+dist: .builds
+env:
+  - CGO_ENABLED=1
+
+builds:
+# linux amd64
+  - id: scratchdata-linux-amd64
+    binary: scratchdata
+    main: ./
+    env:
+      - CC=x86_64-linux-gnu-gcc
+      - CXX=x86_64-linux-gnu-g++
+    goos:
+      - linux
+    goarch:
+      - amd64
+    flags:
+      - -trimpath
+    ldflags:
+      - -extldflags "-lc -lrt -lpthread --static"
+
+archives:
+  - id: scratchdata
+    builds:
+      - scratchdata-linux-amd64
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    wrap_in_directory: true
+    format: tar.gz
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
