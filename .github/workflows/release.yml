@@ -26,33 +26,10 @@ jobs:
         with:
           go-version: stable
 
-      - name: Check if osx-cross is cached
-        id: osx-cross-hit
-        run: |
-          echo "cache-hit=$(test -d /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin && echo true || echo false)" >> $GITHUB_OUTPUT
-
-      - name: Test
-        run: echo ${{ steps.osx-cross-hit.outputs.cache-hit }}
-
-      - name: Restore osx-cross cache
-        if: steps.osx-cross-hit.outputs.cache-hit == 'true'
-        uses: actions/cache@v2
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
         with:
-          path: /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin
-          restore-keys: osx-cross
-
-      - name: Install osx-cross
-        if: steps.osx-cross-hit.outputs.cache-hit != 'true'
-        uses: mbround18/setup-osxcross@v1
-        with:
-          osx-version: "12.3"
-
-      - name: Cache osx-cross
-        if: steps.osx-cross-hit.outputs.cache-hit != 'true'
-        uses: actions/cache@v2
-        with:
-          path: /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin
-          key: osx-cross
+          version: "10.0"
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
