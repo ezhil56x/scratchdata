@@ -31,7 +31,7 @@ jobs:
       - name: Install osx-cross
         uses: mbround18/setup-osxcross@v1
         with:
-          version: "12.3"
+          osx-version: "12.3"
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
