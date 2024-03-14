@@ -21,21 +21,6 @@ builds:
     ldflags:
       - -extldflags "-lc -lrt -lpthread --static"
 
-# # windows amd64
-#   - id: scratchdata-windows-amd64
-#     binary: scratchdata
-#     main: ./
-#     env:
-#       - CC=x86_64-w64-mingw32-gcc
-#       - CXX=x86_64-w64-mingw32-g++
-#     goos:
-#       - windows
-#     goarch:
-#       - amd64
-#     flags:
-#       - -trimpath
-#       - -buildmode=exe
-
 # darwin arm64
   - id: scratchdata-darwin-arm64
     binary: scratchdata-darwin-arm64
@@ -46,7 +31,7 @@ builds:
     goos:
       - darwin
     goarch:
-      - amd64
+      - arm64
     flags:
       - -trimpath
 
@@ -69,18 +54,11 @@ archives:
     allow_different_binary_count: true
     builds:
       - scratchdata-linux-amd64
-      # - scratchdata-windows-amd64
       - scratchdata-darwin-arm64
       - scratchdata-darwin-amd64
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
     wrap_in_directory: true
     format: tar.gz
-    format_overrides:
-      - goos: windows
-        format: zip
-    # files:
-    #   - LICENSE
-    #   - README.md
 
 checksum:
   name_template: 'checksums.txt'
