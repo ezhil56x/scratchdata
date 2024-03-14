@@ -31,10 +31,18 @@ jobs:
       - name: Cache osx-cross
         uses: actions/cache@v2
         with:
-          path: /opt/osxcross
+          path: /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin
           key: osxcross
+          restore-keys: |
+            osxcross
+
+      - name: Check if osx-cross is cached
+        id: osx-cross-hit
+        run: |
+          echo "cache-hit=$(test -d /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin && echo true || echo false)" >> $GITHUB_OUTPUT
 
       - name: Install osx-cross
+        if: steps.osx-cross-hit.outputs.cache-hit != 'true'
         uses: mbround18/setup-osxcross@v1
         with:
           osx-version: "12.3"
