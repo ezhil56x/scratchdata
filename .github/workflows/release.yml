@@ -5,6 +5,7 @@ on:
   pull_request:
   push:
     # run only against tags
+    # https://semver.org/
     tags:
       - "*"
 
