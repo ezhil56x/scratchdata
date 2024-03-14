@@ -25,27 +25,31 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: stable
-      # More assembly might be required: Docker logins, GPG, etc.
-      # It all depends on your needs.
-
-      - name: Cache osx-cross
-        uses: actions/cache@v2
-        with:
-          path: /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin
-          key: osxcross
-          restore-keys: |
-            osxcross
 
       - name: Check if osx-cross is cached
         id: osx-cross-hit
         run: |
           echo "cache-hit=$(test -d /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin && echo true || echo false)" >> $GITHUB_OUTPUT
 
+      - name: Restore osx-cross cache
+        if: steps.osx-cross-hit.outputs.cache-hit == 'true'
+        uses: actions/cache@v2
+        with:
+          path: /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin
+          restore-keys: osx-cross
+
       - name: Install osx-cross
         if: steps.osx-cross-hit.outputs.cache-hit != 'true'
         uses: mbround18/setup-osxcross@v1
         with:
           osx-version: "12.3"
+
+      - name: Cache osx-cross
+        if: steps.osx-cross-hit.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: /home/runner/work/_actions/mbround18/setup-osxcross/v1/osxcross/target/bin
+          key: osx-cross
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
