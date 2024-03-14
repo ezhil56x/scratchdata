@@ -5,73 +5,48 @@ on:
   pull_request:
   push:
     # run only against tags
-    # https://semver.org/
     tags:
       - "*"
 
 permissions:
   contents: write
-  packages: write
-  issues: write
+  # packages: write
+  # issues: write
 
 jobs:
-  goreleaser-linux:
+  goreleaser:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: stable
+      # More assembly might be required: Docker logins, GPG, etc.
+      # It all depends on your needs.
 
-      - name: test
-        run: pwd
+      - name: Install clang
+        run: |
+          curl -sSL https://cmake.org/files/v3.14/cmake-3.14.5-Linux-x86_64.tar.gz | sudo tar -xzC /opt
+          export PATH=/opt/cmake-3.14.5-Linux-x86_64/bin:$PATH
 
-      - name: Run GoReleaser for Linux
+      - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:
           # either 'goreleaser' (default) or 'goreleaser-pro'
           distribution: goreleaser
           version: latest
-          args: release --clean --config ${{ github.workspace }}/scripts/.goreleaser-linux.yml
-          workdir: /home/runner/work/scratchdata/scratchdata
+          args: release --clean
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Your GoReleaser Pro key, if you are using the 'goreleaser-pro' distribution
+          # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: release
-          path: dist/*
-
-  goreleaser-darwin:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: stable
-
-      - name: Run GoReleaser for Darwin
-        uses: goreleaser/goreleaser-action@v5
-        with:
-          distribution: goreleaser
-          version: latest
-          args: release --clean --config ${{github.workspace}}/scripts/.goreleaser-darwin.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: release
           path: dist/*

@@ -42,8 +42,8 @@ archives:
     wrap_in_directory: true
     format: tar.gz
     files:
-      - LICENSE
-      - README.md
+      - ${{ github.workspace }}/LICENSE
+      - ${{ github.workspace }}/README.md
 
 checksum:
   name_template: 'checksums.txt'
