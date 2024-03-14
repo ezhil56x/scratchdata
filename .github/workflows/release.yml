@@ -37,6 +37,7 @@ jobs:
           distribution: goreleaser
           version: latest
           args: release --clean --config ./scripts/.goreleaser-linux.yml
+          workdir: /home/runner/work/scratchdata/scratchdata
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
@@ -65,7 +66,7 @@ jobs:
           distribution: goreleaser
           version: latest
           args: release --clean --config ./scripts/.goreleaser-darwin.yml
-          workdir: ./
+          workdir: /home/runner/work/scratchdata/scratchdata
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
